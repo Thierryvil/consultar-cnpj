@@ -24,7 +24,8 @@ class App {
         'mongodb://localhost:27017/consultar_cnpj',
         {
           useUnifiedTopology: true,
-          useNewUrlParser: true
+          useNewUrlParser: true,
+          useFindAndModify: false
         },
         () => console.log('Database Connected')
       );

@@ -1,32 +1,28 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-param-reassign */
 import { Schema, model, Model, Document } from 'mongoose';
 import ICompanies from '../interfaces/ICompanies';
+import PartnersSchema from './PartnersSchema';
 
 export interface CompaniesModel extends ICompanies, Document {}
 
-const ComapaniesSchema = new Schema({
+const CompaniesSchema = new Schema({
   cnpj: String,
   razao_social: String,
   uf: String,
-  qsa: [
-    {
-      cpf_cnpj_socio: String,
-      nome_socio: String,
-      qualificacao_socio: String,
-      tipo_socio: String
-    }
-  ]
+  qsa: [PartnersSchema]
 });
 
-ComapaniesSchema.options.toJSON = {
-  transform(doc, ret, options) {
-    ret.id = ret.id;
-    delete ret._id;
+CompaniesSchema.set('toJSON', {
+  getters: true,
+  virtuals: false,
+  transform(doc, ret) {
     delete ret.__v;
-    return ret;
+    delete ret._id;
   }
-};
+});
 
-export const Comapanies: Model<CompaniesModel> = model<CompaniesModel>(
-  'comapanies',
-  ComapaniesSchema
+export const Companies: Model<CompaniesModel> = model<CompaniesModel>(
+  'companies',
+  CompaniesSchema
 );
