@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable class-methods-use-this */
-import { Request, Response } from 'express';
+import { Request, response, Response } from 'express';
 import axios from 'axios';
 import { Companies, CompaniesModel } from '../schemas/CompaniesSchema';
 import {
@@ -19,13 +19,16 @@ async function getCompanieInRealTime(cnpj: string): Promise<CompaniesModel> {
   const companieResponse = await axiosMakeRequest(
     BASE_URL + ENDPOINT_EMPRESA + cnpj
   );
+
+  if (Object.keys(companieResponse.data.results).length == 0)
+    throw new Error('Invalid CNPJ');
+
   const newCompanie = companieResponse.data.results[0];
 
   const partnersResponse = await axiosMakeRequest(
     BASE_URL + ENDPOINT_SOCIOS + cnpj
   );
 
-  console.log(partnersResponse.status);
   const partners = partnersResponse.data.results;
   const partnersList: Object[] = [];
 
@@ -57,7 +60,7 @@ class ComapaniesController {
       const cnpj = req.query.cnpj.toString();
 
       if (searchType == 'cacheado') {
-        Companies.findOne({ cnpj }).exec(
+        await Companies.findOne({ cnpj }).exec(
           async (err: string, companie: CompaniesModel) => {
             if (err) return console.log(err);
             if (!companie) {
@@ -79,10 +82,11 @@ class ComapaniesController {
         });
 
         return res.status(200).send(comp.toJSON());
-      } else return res.status(400).send('Invalid type.');
+      } else return res.status(400).send('Invalid search type.');
     } catch (error) {
       return res.status(400).send({ error: error.message });
     }
+    return response;
   }
 }
 

@@ -21,7 +21,7 @@ class App {
   private database(): void {
     try {
       mongoose.connect(
-        'mongodb://localhost:27017/consultar_cnpj',
+        process.env.MONGODB_URI,
         {
           useUnifiedTopology: true,
           useNewUrlParser: true,
