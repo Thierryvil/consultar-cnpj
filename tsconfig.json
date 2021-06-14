@@ -2,8 +2,8 @@
     "compilerOptions": {
       "target": "es6",
       "module": "commonjs",
-      "noEmit": true,
-      "outDir": "dist",
+      "outDir": "./dist",
+      "rootDir": "./src",
       "resolveJsonModule": true,
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,

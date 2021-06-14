@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch=node_modules src/server.ts",
-    "lint": "eslint --ext .tsx,.ts, src/**"
+    "lint": "eslint --ext .tsx,.ts, src/**",
+    "build" : "tsc -p ."
   },
   "dependencies": {
     "axios": "^0.21.1",
